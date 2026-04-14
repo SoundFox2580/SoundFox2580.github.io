@@ -2,32 +2,18 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>刻墓斯工作室 - 全自动作品墙</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刻墓斯 · 全自动作品墙</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ... (样式部分与之前保持一致，为节省篇幅此处省略) ... */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+            font-family: system-ui, 'Segoe UI', 'PingFang SC', Roboto, sans-serif;
             background: #f8fafc;
             padding: 24px 20px;
         }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        /* 头部区域 */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
+        .container { max-width: 1300px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
         .studio-name {
             font-size: 2.5rem;
             font-weight: 700;
@@ -35,60 +21,28 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
         }
-
-        .subtitle {
-            color: #5a6874;
-            margin-top: 8px;
-            font-size: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-
-        /* 作品网格 */
-        .works-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 28px;
-        }
-
-        /* 作品卡片 */
+        .subtitle { color: #5a6874; margin-top: 8px; border-bottom: 1px solid #e2e8f0; display: inline-block; padding-bottom: 8px; }
+        .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px; }
         .work-card {
             background: white;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
             text-decoration: none;
             color: #1e293b;
             display: flex;
             flex-direction: column;
         }
-
-        .work-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
-        }
-
+        .work-card:hover { transform: translateY(-6px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15); }
         .cover {
             width: 100%;
             aspect-ratio: 16 / 9;
             object-fit: cover;
             background-color: #eef2ff;
-            transition: transform 0.4s ease;
         }
-
-        .work-card:hover .cover {
-            transform: scale(1.02);
-        }
-
-        .info {
-            padding: 16px 18px 20px;
-            flex: 1;
-        }
-
+        .info { padding: 16px 18px 20px; flex: 1; }
         .title {
             font-weight: 600;
             font-size: 1rem;
@@ -99,7 +53,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
         .author {
             font-size: 0.8rem;
             color: #f97316;
@@ -108,27 +61,14 @@
             align-items: center;
             gap: 6px;
         }
-
-        .author::before {
-            content: "✧";
-            font-size: 12px;
-        }
-
-        /* 加载和错误状态 */
+        .author::before { content: "✧"; font-size: 12px; }
         .loading-state, .error-state, .empty-state {
             text-align: center;
             padding: 60px 20px;
             background: white;
             border-radius: 32px;
             color: #475569;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-
-        .error-state {
-            border-left: 5px solid #ef4444;
-            background: #fef2f2;
-        }
-
         .footer {
             margin-top: 50px;
             text-align: center;
@@ -143,24 +83,25 @@
 <div class="container">
     <div class="header">
         <div class="studio-name">✧ 刻墓斯 · 创想工坊 ✧</div>
-        <div class="subtitle">✨ 自动同步工作室全部作品 · 新作品即时出现</div>
+        <div class="subtitle">✨ 新作品自动同步 · 一次配置永久更新 ✨</div>
     </div>
-
     <div id="worksContainer" class="works-grid">
-        <div class="loading-state">🚀 正在加载工作室成员及最新作品...</div>
+        <div class="loading-state">🚀 正在加载成员最新作品...</div>
     </div>
-    <div class="footer">
-        💡 作品墙自动抓取「刻墓斯」工作室全体成员的作品，无需任何手动维护
-    </div>
+    <div class="footer">💡 提示：作品墙会实时同步已配置成员的最新公开作品</div>
 </div>
 
 <script>
     // ======================= 🎯 只需要修改这一个地方 =======================
-    // 把你的工作室 ID 填在这里（在工作室主页的网址里可以找到）
-    const STUDIO_ID = '7902';   // 例如： 12345678
+    // 把你和所有朋友的编程猫用户ID填进这个数组
+    // 如何获取用户ID？访问个人主页，网址中 https://shequ.codemao.cn/user/ 后面的数字就是ID
+    const memberIds = [
+        1234415,
+        521780
+    ];
 
-    // 每个成员最多拉取多少个作品（建议 3～6 个，兼顾性能和全面性）
-    const WORKS_PER_USER = 5;
+    // 每个成员最多拉取多少个作品
+    const WORKS_PER_USER = 6;
     // ==================================================================
 
     // 工具：简单的防XSS
@@ -174,88 +115,42 @@
         });
     }
 
-    // 1️⃣ 获取工作室的成员列表（通过工作室 API）
-    async function fetchStudioMembers(studioId) {
-        // 编程猫工作室成员接口（通过观察社区抓包得到）
-        const url = `https://shequ.codemao.cn/api/community/studio/${studioId}/member`;
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status} - 无法获取工作室信息`);
-            }
-            const data = await response.json();
-            // 返回的数据结构通常是 { items: [ { user_id, nickname, ... } ] }
-            if (data && data.items && Array.isArray(data.items)) {
-                // 提取出每个成员的用户ID和昵称
-                return data.items.map(item => ({
-                    userId: item.user_id,
-                    nickname: item.nickname || '工作室成员'
-                }));
-            } else {
-                console.warn('成员接口返回格式异常', data);
-                return [];
-            }
-        } catch (err) {
-            console.error('获取工作室成员失败:', err);
-            throw err;
-        }
-    }
-
-    // 2️⃣ 根据用户ID获取该用户最近的作品
-    async function fetchWorksByUserId(userId, nickname) {
+    // 获取单个成员的作品列表
+    async function fetchWorksByUserId(userId) {
         const url = `https://shequ.codemao.cn/api/community/work/user/${userId}?page=1&size=${WORKS_PER_USER}`;
         try {
-            const resp = await fetch(url);
-            if (!resp.ok) return [];
-            const json = await resp.json();
-
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            
             let works = [];
-            if (json.items && Array.isArray(json.items)) works = json.items;
-            else if (json.works && Array.isArray(json.works)) works = json.works;
-            else if (json.data && Array.isArray(json.data)) works = json.data;
-            else if (Array.isArray(json)) works = json;
+            if (data.items && Array.isArray(data.items)) works = data.items;
+            else if (data.works && Array.isArray(data.works)) works = data.works;
+            else if (data.data && Array.isArray(data.data)) works = data.data;
+            else if (Array.isArray(data)) works = data;
 
-            // 统一成我们需要的数据结构
             return works.map(work => ({
                 id: work.id,
                 title: work.name || work.title || '未命名作品',
-                cover: work.cover_url || work.cover || 'https://cdn.codemao.cn/default_cover.png',
+                cover: work.cover_url || work.cover || 'https://static.codemao.cn/whitef/favicon.ico', // 默认图片
                 url: `https://shequ.codemao.cn/work/${work.id}`,
-                authorName: nickname,     // 使用工作室里的昵称
+                authorName: work.nickname || work.author_name || '工作室成员',
                 userId: userId,
-                // 如果有时间字段可以保留用于排序
                 createTime: work.created_at || work.publish_time || null
             }));
         } catch (err) {
-            console.error(`获取用户 ${userId} 的作品失败:`, err);
+            console.error(`获取用户 ${userId} 作品失败:`, err);
             return [];
         }
     }
 
-    // 3️⃣ 获取工作室所有成员的作品（核心流程）
-    async function fetchAllStudioWorks() {
-        // 第一步：获取成员列表
-        const members = await fetchStudioMembers(STUDIO_ID);
-        if (!members.length) {
-            throw new Error('工作室没有成员或成员接口不可用，请检查工作室ID是否正确');
-        }
+    // 获取所有成员的作品
+    async function fetchAllWorks() {
+        const allWorksPromises = memberIds.map(uid => fetchWorksByUserId(uid));
+        const worksArrays = await Promise.all(allWorksPromises);
+        let allWorks = worksArrays.flat();
 
-        // 第二步：并发获取每个成员的作品（注意控制并发数，避免请求太多）
-        const concurrency = 5;  // 每次同时请求5个用户
-        let allWorks = [];
-
-        for (let i = 0; i < members.length; i += concurrency) {
-            const batch = members.slice(i, i + concurrency);
-            const batchPromises = batch.map(member => fetchWorksByUserId(member.userId, member.nickname));
-            const batchResults = await Promise.all(batchPromises);
-            for (const works of batchResults) {
-                allWorks.push(...works);
-            }
-            // 稍微停顿一下，避免请求过快（可选）
-            if (i + concurrency < members.length) await new Promise(r => setTimeout(r, 200));
-        }
-
-        // 去重（同一个作品ID只保留一个，防止不同成员同时出现在工作室里导致作品重复）
+        // 去重
         const uniqueMap = new Map();
         allWorks.forEach(work => {
             if (!uniqueMap.has(work.id)) {
@@ -264,7 +159,7 @@
         });
         allWorks = Array.from(uniqueMap.values());
 
-        // 按作品ID倒序（通常ID越大越新）
+        // 按作品ID倒序排序 (ID越大通常越新)
         allWorks.sort((a, b) => b.id - a.id);
         return allWorks;
     }
@@ -273,13 +168,13 @@
     function renderWorks(works) {
         const container = document.getElementById('worksContainer');
         if (!works.length) {
-            container.innerHTML = '<div class="empty-state">📭 工作室暂时还没有公开发布的作品，快去创作吧！</div>';
+            container.innerHTML = '<div class="empty-state">📭 暂无作品，请先配置成员ID或等待成员发布作品。</div>';
             return;
         }
 
         container.innerHTML = works.map(work => `
             <a class="work-card" href="${work.url}" target="_blank" rel="noopener noreferrer">
-                <img class="cover" src="${work.cover}" alt="${escapeHtml(work.title)}" loading="lazy" onerror="this.src='https://cdn.codemao.cn/default_cover.png'">
+                <img class="cover" src="${work.cover}" alt="${escapeHtml(work.title)}" loading="lazy" onerror="this.src='https://static.codemao.cn/whitef/favicon.ico'">
                 <div class="info">
                     <div class="title">${escapeHtml(work.title)}</div>
                     <div class="author">${escapeHtml(work.authorName)}</div>
@@ -291,12 +186,16 @@
     // 启动
     async function init() {
         const container = document.getElementById('worksContainer');
+        if (memberIds.length === 0) {
+            container.innerHTML = '<div class="error-state">⚠️ 请先在代码中配置工作室成员的用户ID！</div>';
+            return;
+        }
         try {
-            const works = await fetchAllStudioWorks();
+            const works = await fetchAllWorks();
             renderWorks(works);
         } catch (err) {
             console.error(err);
-            container.innerHTML = `<div class="error-state">⚠️ 加载失败: ${escapeHtml(err.message)}<br><br>👉 请检查工作室ID是否正确，或稍后重试。</div>`;
+            container.innerHTML = '<div class="error-state">⚠️ 加载失败，请检查网络或稍后重试。</div>';
         }
     }
 
